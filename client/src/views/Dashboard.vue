@@ -15,10 +15,10 @@
             <div class="kpi-header">
               <span class="kpi-label">{{ t('dashboard.kpi.inventoryTurnover') }}</span>
             </div>
-            <div class="kpi-value">4.2</div>
-            <div class="kpi-goal">{{ t('dashboard.kpi.goal') }}: 4.5 (-6.67%)</div>
+            <div class="kpi-value">—</div>
+            <div class="kpi-goal">{{ t('dashboard.kpi.pendingDefinition') }}</div>
             <div class="kpi-progress-bar">
-              <div class="kpi-progress" style="width: 93.33%"></div>
+              <div class="kpi-progress" style="width: 0%"></div>
             </div>
           </div>
 
@@ -37,7 +37,7 @@
             <div class="kpi-header">
               <span class="kpi-label">{{ t('dashboard.kpi.orderFillRate') }}</span>
             </div>
-            <div class="kpi-value">{{ fillRate }}%</div>
+            <div class="kpi-value">{{ fillRate.toFixed(1) }}%</div>
             <div class="kpi-goal">{{ t('dashboard.kpi.goal') }}: 95% ({{ fillRate - 95 > 0 ? '+' : '' }}{{ (fillRate - 95).toFixed(2) }}%)</div>
             <div class="kpi-progress-bar">
               <div class="kpi-progress success" :style="{ width: (fillRate / 95 * 100) + '%' }"></div>
@@ -59,10 +59,10 @@
             <div class="kpi-header">
               <span class="kpi-label">{{ t('dashboard.kpi.avgProcessingTime') }}</span>
             </div>
-            <div class="kpi-value">2.8</div>
-            <div class="kpi-goal">{{ t('dashboard.kpi.goal') }}: 3.0 (-6.67%)</div>
+            <div class="kpi-value">{{ orderHealthMetrics.avgFulfillmentDays.toFixed(1) }}</div>
+            <div class="kpi-goal">{{ t('dashboard.kpi.goal') }}: {{ avgProcessingTimeGoal.toFixed(1) }} ({{ avgProcessingTimeDiff > 0 ? '+' : '' }}{{ avgProcessingTimeDiff.toFixed(2) }}%)</div>
             <div class="kpi-progress-bar">
-              <div class="kpi-progress success" style="width: 93.33%"></div>
+              <div class="kpi-progress success" :style="{ width: Math.min((avgProcessingTimeGoal / Math.max(orderHealthMetrics.avgFulfillmentDays, 0.01) * 100), 100) + '%' }"></div>
             </div>
           </div>
         </div>
@@ -337,8 +337,27 @@ export default {
       getCurrentFilters
     } = useFilters()
 
-    const ordersData = ref({ fulfilled: 187, goal: 200 })
-    const fillRate = ref(96.8)
+    const ordersData = computed(() => {
+      const delivered = allOrders.value.filter(o => o.status.toLowerCase() === 'delivered').length
+      const goal = selectedPeriod.value === 'all' ? 200 : Math.round(200 / 12)
+      return { fulfilled: delivered, goal }
+    })
+
+    const fillRate = computed(() => {
+      const total = allOrders.value.length
+      if (total === 0) return 0
+      const delivered = allOrders.value.filter(o => o.status.toLowerCase() === 'delivered').length
+      const shipped = allOrders.value.filter(o => o.status.toLowerCase() === 'shipped').length
+      return ((delivered + shipped) / total) * 100
+    })
+
+    const avgProcessingTimeGoal = computed(() => 3.0)
+
+    const avgProcessingTimeDiff = computed(() => {
+      const actual = orderHealthMetrics.value.avgFulfillmentDays
+      if (actual === 0) return 0
+      return ((actual / avgProcessingTimeGoal.value) - 1) * 100
+    })
 
     const revenueGoal = computed(() => {
       // $800K per month, so if looking at all months (12 months), goal is 12 * 800K = 9.6M
@@ -686,6 +705,8 @@ export default {
       summary,
       ordersData,
       fillRate,
+      avgProcessingTimeGoal,
+      avgProcessingTimeDiff,
       statusData,
       orderHealthMetrics,
       categoryData,
