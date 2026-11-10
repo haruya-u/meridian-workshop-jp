@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>提案書：在庫管理ダッシュボードのモダナイズおよび機能拡張 | Meridian Components様</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a2433;
+    --sub: #5a6b7d;
+    --line: #e3e8ee;
+    --accent: #2563eb;
+    --accent-bg: #eef3fe;
+    --bg: #f7f9fc;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: "Noto Sans JP", sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    margin: 0;
+    line-height: 1.75;
+  }
+  .wrap {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 56px 32px 96px;
+  }
+  header.cover {
+    border-bottom: 4px solid var(--accent);
+    padding-bottom: 28px;
+    margin-bottom: 40px;
+  }
+  header.cover .kicker {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 14px;
+    letter-spacing: .06em;
+  }
+  header.cover h1 {
+    font-size: 30px;
+    margin: 10px 0 18px;
+    font-weight: 900;
+  }
+  header.cover .meta {
+    color: var(--sub);
+    font-size: 14px;
+  }
+  h2 {
+    font-size: 21px;
+    margin: 48px 0 16px;
+    padding-left: 14px;
+    border-left: 6px solid var(--accent);
+  }
+  h3 {
+    font-size: 16px;
+    margin: 28px 0 10px;
+    color: var(--accent);
+  }
+  p { margin: 0 0 14px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0 24px;
+    font-size: 14px;
+    background: #fff;
+  }
+  th, td {
+    border: 1px solid var(--line);
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+  }
+  th {
+    background: var(--accent-bg);
+    color: var(--accent);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  tr:last-child td { font-weight: 700; background: #fafcff; }
+  ul.assumptions { padding-left: 20px; font-size: 14.5px; }
+  ul.assumptions li { margin-bottom: 10px; }
+  .callout {
+    background: var(--accent-bg);
+    border: 1px solid #cfe0fb;
+    border-radius: 10px;
+    padding: 16px 20px;
+    font-size: 14.5px;
+    margin: 20px 0;
+  }
+  footer {
+    margin-top: 56px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    color: var(--sub);
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="cover">
+    <div class="kicker">PROPOSAL</div>
+    <h1>在庫管理ダッシュボードのモダナイズおよび機能拡張</h1>
+    <div class="meta">
+      提出先: Meridian Components, Inc. 調達部 J. Okafor 様　|　RFP番号: MC-2026-0417　|　提出日: 2026年11月10日
+    </div>
+  </header>
+
+  <h2>1. エグゼクティブサマリー</h2>
+  <p>貴社の在庫管理ダッシュボードは、日々のオペレーションを支える重要な業務基盤でありながら、概要ページの主要指標がフィルター操作に追随しないという根本的な不具合により、現場チームの信頼を損なっています。加えて、Reports モジュールの未解消の欠陥、自動テストの不在が、貴社 IT 部門による変更承認を事実上止めている状況と理解しています。</p>
+  <p>私たちは、この状態を「機能を積み増す前に、まず信頼と変更の安全性を取り戻す」ことが最優先と考えます。具体的には、①現場が毎日見る概要ページ（R1）を最初に修正して信頼を早期に回復し、②並行してブラウザテストの自動化（R4）とアーキテクチャドキュメント（R5）を整備して IT 部門が安心して変更を承認できる体制を作り、③その土台の上で Reports の欠陥解消（R2）と発注推奨機能（R3）を着実に進める、という順序を提案します。</p>
+  <div class="callout">各フェーズへの投資は「次のフェーズのリスクを下げる」投資として設計しています。R1への投資は現場の信頼回復という即時的なリターンを生み、R4・R5への投資はその後のR2・R3を安全かつ低リスクに進めるための前払いです。総投資に対し「手戻りの少ない完走」というリターンを見込みます。</div>
+  <p>前任ベンダーの引き継ぎが最小限であった経緯を踏まえ、価格は上限付き T&amp;M 形式とし、スケジュールの確度と途中経過の可視性を重視した進め方をご提案します。</p>
+
+  <h2>2. 技術アプローチ</h2>
+  <h3>2.1 要件対応表</h3>
+  <table>
+    <tr><th>#</th><th>要件</th><th>フェーズ</th><th>進め方</th><th>完了基準</th><th>期待される効果</th></tr>
+    <tr><td>R1</td><td>概要ページの改修</td><td>1</td><td>フィルター状態管理とKPI集計ロジックの結線を調査し、全KPIが追随するよう修正</td><td>期間・拠点のあらゆる組み合わせでKPIが正しく表示され、承認を得る</td><td>現場が表計算での二重集計をやめ、ダッシュボードを業務の起点にできる</td></tr>
+    <tr><td>R4</td><td>ブラウザテストの自動化</td><td>2</td><td>主要フローのE2Eテストを整備しCIで実行可能にする</td><td>主要フローがCI上で自動検証される</td><td>IT部門の変更承認が止まらなくなり、以降の手戻りリスクが下がる</td></tr>
+    <tr><td>R5</td><td>アーキテクチャドキュメント</td><td>2</td><td>現行アーキテクチャを調査し、引き継ぎに耐える資料として整備</td><td>IT部門が資料単体で構成を把握できる</td><td>将来の引き継ぎコストを下げる</td></tr>
+    <tr><td>R2</td><td>Reportsモジュールの改修</td><td>3</td><td>既知の欠陥を棚卸しし優先度順に解消。R4のテスト基盤で回帰防止</td><td>記録済み欠陥がすべて解消し再発防止テストが存在する</td><td>Reportsの数字を業務判断にそのまま使える</td></tr>
+    <tr><td>R3</td><td>発注推奨機能</td><td>4</td><td>在庫水準・需要予測・予算上限を入力とするRestockingビューを新規実装</td><td>予算上限を指定し推奨リストを得られる</td><td>発注判断が属人的な経験則から脱する</td></tr>
+  </table>
+
+  <h3>2.2 前提条件</h3>
+  <ul class="assumptions">
+    <li><b>A1（R2の欠陥件数）</b>: 「少なくとも8件」とのみ記載があり全量が未確定のため、上限付きT&amp;Mの中で優先度順に対応します。</li>
+    <li><b>A2（D1「現在の標準」）</b>: 基準が未定義のため、今回の提案には含めず別フェーズとして切り出します。</li>
+    <li><b>A3（予算レンジ）</b>: 記載がないため、類似規模案件の実績に基づく見積もりを提示し、上限額は協議により確定します。</li>
+    <li><b>A4（R4「主要なユーザーフロー」）</b>: 概要ページ・Reports・Restockingの主要操作を対象と仮定し、キックオフ時に確定させます。</li>
+    <li><b>A5（非機能要件）</b>: パフォーマンス・可用性・セキュリティなどの記載がないため現行同等以上を前提とし、着手前のヒアリング・アーキテクチャレビューで確定させます。リージョン・ネットワーク構成、認証認可方式、R3のレコメンドロジックの性能要件など、前提から大きく外れる場合はスコープまたは価格上限を再協議します。</li>
+  </ul>
+
+  <h2>3. 関連実績</h2>
+  <p>（社内資料から追記）</p>
+
+  <h2>4. スケジュール</h2>
+  <table>
+    <tr><th>フェーズ</th><th>内容</th><th>目安期間</th></tr>
+    <tr><td>キックオフ</td><td>ヒアリング・アーキテクチャレビュー（非機能要件を含む仕様確定、R5の一部を前倒し）</td><td>受注後1週間</td></tr>
+    <tr><td>フェーズ1</td><td>R1: 概要ページの改修</td><td>キックオフ完了後2週間</td></tr>
+    <tr><td>フェーズ2</td><td>R4: ブラウザテスト自動化／R5: アーキテクチャドキュメント</td><td>フェーズ1完了後3週間（並行実施）</td></tr>
+    <tr><td>フェーズ3</td><td>R2: Reportsモジュールの改修</td><td>フェーズ2完了後4週間</td></tr>
+    <tr><td>フェーズ4</td><td>R3: 発注推奨機能の新規実装</td><td>フェーズ3完了後4週間</td></tr>
+  </table>
+  <p>希望項目（D1〜D3）は今回の必須スコープには含めず、必須項目完了後の拡張フェーズとして別途ご提案します。</p>
+
+  <h2>5. 価格</h2>
+  <p>上限付き T&amp;M（Time &amp; Materials, with a cap）形式を提案します。固定価格ではなく上限付きT&amp;Mとするのは、R2の欠陥件数・難易度が現時点で確定していないためです。各フェーズの実績工数と残予算は週次で共有し、価格の予見可能性を確保します。</p>
+  <table>
+    <tr><th>フェーズ</th><th>内容</th><th>工数目安</th><th>コストレンジ（上限）</th><th>円換算（参考）</th></tr>
+    <tr><td>フェーズ1</td><td>R1: 概要ページの改修</td><td>1名×2週間（約80時間）</td><td>$12,000〜$16,000</td><td>約180万〜240万円</td></tr>
+    <tr><td>フェーズ2</td><td>R4・R5</td><td>1〜2名×3週間（約160時間）</td><td>$24,000〜$32,000</td><td>約360万〜480万円</td></tr>
+    <tr><td>フェーズ3</td><td>R2: Reportsモジュールの改修</td><td>1〜2名×4週間（約200時間）</td><td>$30,000〜$42,000</td><td>約450万〜630万円</td></tr>
+    <tr><td>フェーズ4</td><td>R3: 発注推奨機能</td><td>1〜2名×4週間（約200時間）</td><td>$30,000〜$40,000</td><td>約450万〜600万円</td></tr>
+    <tr><td>合計</td><td></td><td>約13週間</td><td>$96,000〜$130,000</td><td>約1,440万〜1,950万円</td></tr>
+  </table>
+  <p>時間単価は$150/時を想定した概算で、RFPに予算レンジの記載がないため幅を持たせています。円換算は便宜上1ドル=150円で計算した参考値であり、実際の請求はドル建てを基準とします。</p>
+
+  <footer>Meridian Components, Inc. 様 御中　|　MC-2026-0417 ご提案書</footer>
+</div>
+</body>
+</html>
