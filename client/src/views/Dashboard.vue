@@ -393,7 +393,11 @@ export default {
       const deliveredOrders = allOrders.value.filter(o => o.status.toLowerCase() === 'delivered')
       const onTimeDeliveries = deliveredOrders.filter(o => {
         if (o.actual_delivery && o.expected_delivery) {
-          return new Date(o.actual_delivery) <= new Date(o.expected_delivery)
+          const actual = new Date(o.actual_delivery)
+          const expected = new Date(o.expected_delivery)
+          if (!isNaN(actual.getTime()) && !isNaN(expected.getTime())) {
+            return actual <= expected
+          }
         }
         return false
       }).length
@@ -406,9 +410,11 @@ export default {
         if (o.order_date && o.actual_delivery) {
           const orderDate = new Date(o.order_date)
           const deliveryDate = new Date(o.actual_delivery)
-          const days = Math.round((deliveryDate - orderDate) / (1000 * 60 * 60 * 24))
-          totalDays += days
-          countWithDates++
+          if (!isNaN(orderDate.getTime()) && !isNaN(deliveryDate.getTime())) {
+            const days = Math.round((deliveryDate - orderDate) / (1000 * 60 * 60 * 24))
+            totalDays += days
+            countWithDates++
+          }
         }
       })
       const avgFulfillmentDays = countWithDates > 0 ? totalDays / countWithDates : 0

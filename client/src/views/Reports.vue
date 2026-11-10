@@ -166,8 +166,12 @@ export default {
         loading.value = true
         const filters = getCurrentFilters()
 
-        quarterlyData.value = await api.getQuarterlyReports(filters)
-        monthlyData.value = await api.getMonthlyTrends(filters)
+        const [quarterly, monthly] = await Promise.all([
+          api.getQuarterlyReports(filters),
+          api.getMonthlyTrends(filters)
+        ])
+        quarterlyData.value = quarterly
+        monthlyData.value = monthly
 
         calculateSummaryStats()
       } catch (err) {
@@ -178,14 +182,14 @@ export default {
     }
 
     const formatNumber = (num) => {
-      var str = num.toString()
-      var parts = str.split('.')
-      var intPart = parts[0]
-      var decPart = parts.length > 1 ? parts[1] : '00'
+      const str = num.toString()
+      const parts = str.split('.')
+      const intPart = parts[0]
+      let decPart = parts.length > 1 ? parts[1] : '00'
 
-      var formatted = ''
-      var count = 0
-      for (var i = intPart.length - 1; i >= 0; i--) {
+      let formatted = ''
+      let count = 0
+      for (let i = intPart.length - 1; i >= 0; i--) {
         if (count > 0 && count % 3 === 0) {
           formatted = ',' + formatted
         }
@@ -204,18 +208,18 @@ export default {
     }
 
     const formatMonth = (monthStr) => {
-      var parts = monthStr.split('-')
-      var year = parts[0]
-      var month = parts[1]
+      const parts = monthStr.split('-')
+      const year = parts[0]
+      const month = parts[1]
 
-      var monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-      var monthIndex = parseInt(month) - 1
+      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      const monthIndex = parseInt(month) - 1
 
       return monthNames[monthIndex] + ' ' + year
     }
 
     const getBarHeight = (revenue) => {
-      var maxRevenue = 0
+      let maxRevenue = 0
       monthlyData.value.forEach(m => {
         if (m.revenue > maxRevenue) maxRevenue = m.revenue
       })
@@ -231,14 +235,14 @@ export default {
     }
 
     const getChangeValue = (current, previous) => {
-      var change = current - previous
+      const change = current - previous
       if (change > 0) return '+$' + formatNumber(change)
       if (change < 0) return '-$' + formatNumber(Math.abs(change))
       return '$0.00'
     }
 
     const getChangeClass = (current, previous) => {
-      var change = current - previous
+      const change = current - previous
       if (change > 0) return 'positive-change'
       if (change < 0) return 'negative-change'
       return ''
@@ -246,8 +250,8 @@ export default {
 
     const getGrowthRate = (current, previous) => {
       if (previous === 0) return 'N/A'
-      var rate = ((current - previous) / previous) * 100
-      var sign = rate > 0 ? '+' : ''
+      const rate = ((current - previous) / previous) * 100
+      const sign = rate > 0 ? '+' : ''
       return sign + rate.toFixed(1) + '%'
     }
 
