@@ -125,103 +125,71 @@
 </template>
 
 <script>
-import axios from 'axios'
+import { ref, watch, onMounted } from 'vue'
+import { api } from '../api'
+import { useFilters } from '../composables/useFilters'
 
 export default {
   name: 'Reports',
-  data() {
-    return {
-      loading: true,
-      error: null,
-      quarterlyData: [],
-      monthlyData: [],
-      totalRevenue: 0,
-      avgMonthlyRevenue: 0,
-      totalOrders: 0,
-      bestQuarter: ''
-    }
-  },
-  mounted() {
-    console.log('Reports component mounted')
-    this.loadData()
-  },
-  methods: {
-    async loadData() {
-      console.log('Loading reports data...')
-      try {
-        this.loading = true
+  setup() {
+    const loading = ref(true)
+    const error = ref(null)
+    const quarterlyData = ref([])
+    const monthlyData = ref([])
+    const totalRevenue = ref(0)
+    const avgMonthlyRevenue = ref(0)
+    const totalOrders = ref(0)
+    const bestQuarter = ref('')
 
-        // Fetch quarterly data
-        console.log('Fetching quarterly data...')
-        const quarterlyResponse = await axios.get('/api/reports/quarterly')
-        this.quarterlyData = quarterlyResponse.data
-        console.log('Quarterly data:', this.quarterlyData)
+    const { selectedLocation, selectedCategory, selectedStatus, getCurrentFilters } = useFilters()
 
-        // Fetch monthly data
-        console.log('Fetching monthly data...')
-        const monthlyResponse = await axios.get('/api/reports/monthly-trends')
-        this.monthlyData = monthlyResponse.data
-        console.log('Monthly data:', this.monthlyData)
+    const calculateSummaryStats = () => {
+      totalRevenue.value = monthlyData.value.reduce((sum, m) => sum + m.revenue, 0)
+      avgMonthlyRevenue.value = monthlyData.value.length > 0
+        ? totalRevenue.value / monthlyData.value.length
+        : 0
+      totalOrders.value = monthlyData.value.reduce((sum, m) => sum + m.order_count, 0)
 
-        // Calculate summary stats
-        console.log('Calculating summary stats...')
-        this.calculateSummaryStats()
-        console.log('Summary stats calculated')
-
-      } catch (err) {
-        console.log('Error loading reports:', err)
-        this.error = 'Failed to load reports: ' + err.message
-      } finally {
-        this.loading = false
-        console.log('Loading complete')
-      }
-    },
-
-    calculateSummaryStats() {
-      // Calculate total revenue
-      var total = 0
-      for (var i = 0; i < this.monthlyData.length; i++) {
-        total = total + this.monthlyData[i].revenue
-      }
-      this.totalRevenue = total
-
-      // Calculate average monthly revenue
-      if (this.monthlyData.length > 0) {
-        this.avgMonthlyRevenue = total / this.monthlyData.length
-      } else {
-        this.avgMonthlyRevenue = 0
-      }
-
-      // Calculate total orders
-      var orders = 0
-      for (var i = 0; i < this.monthlyData.length; i++) {
-        orders = orders + this.monthlyData[i].order_count
-      }
-      this.totalOrders = orders
-
-      // Find best quarter
-      var bestQ = ''
-      var bestRevenue = 0
-      for (var i = 0; i < this.quarterlyData.length; i++) {
-        if (this.quarterlyData[i].total_revenue > bestRevenue) {
-          bestRevenue = this.quarterlyData[i].total_revenue
-          bestQ = this.quarterlyData[i].quarter
+      let bestQ = ''
+      let bestRevenue = 0
+      quarterlyData.value.forEach(q => {
+        if (q.total_revenue > bestRevenue) {
+          bestRevenue = q.total_revenue
+          bestQ = q.quarter
         }
+      })
+      bestQuarter.value = bestQ
+    }
+
+    const loadData = async () => {
+      try {
+        loading.value = true
+        const filters = getCurrentFilters()
+
+        const [quarterly, monthly] = await Promise.all([
+          api.getQuarterlyReports(filters),
+          api.getMonthlyTrends(filters)
+        ])
+        quarterlyData.value = quarterly
+        monthlyData.value = monthly
+
+        calculateSummaryStats()
+      } catch (err) {
+        error.value = 'Failed to load reports: ' + err.message
+      } finally {
+        loading.value = false
       }
-      this.bestQuarter = bestQ
-    },
+    }
 
-    formatNumber(num) {
-      console.log('Formatting number:', num)
-      // Format number with commas
-      var str = num.toString()
-      var parts = str.split('.')
-      var intPart = parts[0]
-      var decPart = parts.length > 1 ? parts[1] : '00'
+    const formatNumber = (num) => {
+      const str = num.toString()
+      const parts = str.split('.')
+      const intPart = parts[0]
+      let decPart = parts.length > 1 ? parts[1] : '00'
 
-      var formatted = ''
-      var count = 0
-      for (var i = intPart.length - 1; i >= 0; i--) {
+      let formatted = ''
+      let count = 0
+      for (let i = intPart.length - 1; i >= 0; i--) {
         if (count > 0 && count % 3 === 0) {
           formatted = ',' + formatted
         }
@@ -237,80 +205,78 @@ export default {
       }
 
       return formatted + '.' + decPart
-    },
+    }
 
-    formatMonth(monthStr) {
-      console.log('Formatting month:', monthStr)
-      // Convert YYYY-MM to readable format
-      var parts = monthStr.split('-')
-      var year = parts[0]
-      var month = parts[1]
+    const formatMonth = (monthStr) => {
+      const parts = monthStr.split('-')
+      const year = parts[0]
+      const month = parts[1]
 
-      var monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-      var monthIndex = parseInt(month) - 1
+      const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+      const monthIndex = parseInt(month) - 1
 
       return monthNames[monthIndex] + ' ' + year
-    },
+    }
 
-    getBarHeight(revenue) {
-      console.log('Calculating bar height for revenue:', revenue)
-      // Calculate bar height (max height 200px)
-      var maxRevenue = 0
-      for (var i = 0; i < this.monthlyData.length; i++) {
-        if (this.monthlyData[i].revenue > maxRevenue) {
-          maxRevenue = this.monthlyData[i].revenue
-        }
-      }
+    const getBarHeight = (revenue) => {
+      let maxRevenue = 0
+      monthlyData.value.forEach(m => {
+        if (m.revenue > maxRevenue) maxRevenue = m.revenue
+      })
 
-      if (maxRevenue === 0) {
-        return 0
-      }
+      if (maxRevenue === 0) return 0
+      return (revenue / maxRevenue) * 200
+    }
 
-      var height = (revenue / maxRevenue) * 200
-      return height
-    },
+    const getFulfillmentClass = (rate) => {
+      if (rate >= 90) return 'badge success'
+      if (rate >= 75) return 'badge warning'
+      return 'badge danger'
+    }
 
-    getFulfillmentClass(rate) {
-      if (rate >= 90) {
-        return 'badge success'
-      } else if (rate >= 75) {
-        return 'badge warning'
-      } else {
-        return 'badge danger'
-      }
-    },
+    const getChangeValue = (current, previous) => {
+      const change = current - previous
+      if (change > 0) return '+$' + formatNumber(change)
+      if (change < 0) return '-$' + formatNumber(Math.abs(change))
+      return '$0.00'
+    }
 
-    getChangeValue(current, previous) {
-      var change = current - previous
-      if (change > 0) {
-        return '+$' + this.formatNumber(change)
-      } else if (change < 0) {
-        return '-$' + this.formatNumber(Math.abs(change))
-      } else {
-        return '$0.00'
-      }
-    },
+    const getChangeClass = (current, previous) => {
+      const change = current - previous
+      if (change > 0) return 'positive-change'
+      if (change < 0) return 'negative-change'
+      return ''
+    }
 
-    getChangeClass(current, previous) {
-      var change = current - previous
-      if (change > 0) {
-        return 'positive-change'
-      } else if (change < 0) {
-        return 'negative-change'
-      } else {
-        return ''
-      }
-    },
-
-    getGrowthRate(current, previous) {
-      if (previous === 0) {
-        return 'N/A'
-      }
-
-      var rate = ((current - previous) / previous) * 100
-      var sign = rate > 0 ? '+' : ''
-
+    const getGrowthRate = (current, previous) => {
+      if (previous === 0) return 'N/A'
+      const rate = ((current - previous) / previous) * 100
+      const sign = rate > 0 ? '+' : ''
       return sign + rate.toFixed(1) + '%'
+    }
+
+    watch([selectedLocation, selectedCategory, selectedStatus], () => {
+      loadData()
+    })
+
+    onMounted(loadData)
+
+    return {
+      loading,
+      error,
+      quarterlyData,
+      monthlyData,
+      totalRevenue,
+      avgMonthlyRevenue,
+      totalOrders,
+      bestQuarter,
+      formatNumber,
+      formatMonth,
+      getBarHeight,
+      getFulfillmentClass,
+      getChangeValue,
+      getChangeClass,
+      getGrowthRate
     }
   }
 }

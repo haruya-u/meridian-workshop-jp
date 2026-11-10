@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>ケイパビリティ・プレゼンテーション | Meridian Components様</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #1a2433;
+    --sub: #5a6b7d;
+    --accent: #2563eb;
+    --accent-bg: #eef3fe;
+    --line: #e3e8ee;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; height: 100%;
+    font-family: "Noto Sans JP", sans-serif;
+    background: #0f172a;
+    overflow: hidden;
+  }
+  .deck { position: relative; width: 100%; height: 100%; }
+  .slide {
+    position: absolute; inset: 0;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    padding: 72px 96px;
+    background: #fff;
+    color: var(--ink);
+  }
+  .slide.active { display: flex; }
+  .kicker { color: var(--accent); font-weight: 700; font-size: 15px; letter-spacing: .08em; margin-bottom: 14px; }
+  h1 { font-size: 42px; font-weight: 900; margin: 0 0 20px; line-height: 1.3; }
+  h2 { font-size: 28px; font-weight: 700; margin: 0 0 28px; border-left: 8px solid var(--accent); padding-left: 18px; }
+  p.lead { font-size: 19px; color: var(--sub); line-height: 1.8; max-width: 720px; }
+  ul.points { font-size: 19px; line-height: 2; padding-left: 26px; }
+  ul.points li { margin-bottom: 8px; }
+  .phases { display: flex; gap: 18px; margin-top: 12px; }
+  .phase-card {
+    flex: 1; background: var(--accent-bg); border: 1px solid #cfe0fb; border-radius: 14px;
+    padding: 20px; font-size: 15.5px;
+  }
+  .phase-card .num { color: var(--accent); font-weight: 900; font-size: 22px; }
+  .phase-card .name { font-weight: 700; margin: 6px 0 10px; }
+  .why-box {
+    background: var(--accent-bg); border: 1px solid #cfe0fb; border-radius: 14px;
+    padding: 24px 28px; font-size: 18px; margin-top: 18px; line-height: 1.8;
+  }
+  .cover { background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%); color: #fff; align-items: flex-start; }
+  .cover .kicker { color: #93c5fd; }
+  .cover h1 { font-size: 46px; }
+  .cover .meta { color: #c7d7f5; font-size: 16px; margin-top: 10px; }
+  .closing { background: #0f172a; color: #fff; align-items: center; text-align: center; }
+  .closing h1 { font-size: 38px; }
+  .closing p.lead { color: #c7d7f5; margin: 0 auto; }
+  .pageno { position: absolute; bottom: 28px; right: 40px; color: var(--sub); font-size: 13px; }
+  .hint { position: absolute; bottom: 28px; left: 40px; color: var(--sub); font-size: 13px; }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <section class="slide active cover">
+    <div class="kicker">CAPABILITY PRESENTATION</div>
+    <h1>在庫管理ダッシュボードの<br>モダナイズおよび機能拡張</h1>
+    <div class="meta">Meridian Components, Inc. 様向けご提案　|　RFP番号 MC-2026-0417</div>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">THE CHALLENGE</div>
+    <h2>現場が数字を信じられず、変更も止まっている</h2>
+    <ul class="points">
+      <li>概要ページのKPIが、期間・拠点フィルターを変えても更新されない</li>
+      <li>オペレーションチームは表計算ソフトで数字を検算し直している</li>
+      <li>Reportsモジュールにも既知の欠陥が未解消のまま残っている</li>
+      <li>自動テストが整備されておらず、IT部門が変更承認に慎重にならざるを得ない</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">OUR APPROACH</div>
+    <h2>機能を積み増す前に、信頼と変更の安全性を取り戻す</h2>
+    <p class="lead">概要ページ（R1）を最初に直して現場の信頼を早期回復。並行してテスト自動化（R4）とアーキテクチャドキュメント（R5）を整え、IT部門が安心して変更を承認できる土台を作ります。その上でReports改修（R2）と発注推奨機能（R3）を着実に進めます。</p>
+    <div class="why-box">各フェーズへの投資は「次のフェーズのリスクを下げる投資」。手戻りの少ない完走を見込みます。</div>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">SCHEDULE</div>
+    <h2>キックオフ＋4フェーズ・約14週間での段階的な納品</h2>
+    <div class="phases">
+      <div class="phase-card"><div class="num">00</div><div class="name">キックオフ</div>ヒアリング / 1週間<br>非機能要件を含む仕様確定</div>
+      <div class="phase-card"><div class="num">01</div><div class="name">概要ページ改修</div>R1 / 2週間<br>信頼の早期回復</div>
+      <div class="phase-card"><div class="num">02</div><div class="name">テスト基盤・資料</div>R4・R5 / 3週間<br>変更を安全に</div>
+      <div class="phase-card"><div class="num">03</div><div class="name">Reports改修</div>R2 / 4週間<br>既知の欠陥を解消</div>
+      <div class="phase-card"><div class="num">04</div><div class="name">発注推奨機能</div>R3 / 4週間<br>発注判断を高度化</div>
+    </div>
+    <div class="why-box">パフォーマンス・セキュリティ・認証認可などの非機能要件はRFPに記載がないため、現行同等以上を前提に、キックオフのヒアリングで仕様を確定します。前提から大きく外れる場合はスコープ・価格を再協議します。</div>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">PRICING</div>
+    <h2>上限付き T&amp;M：確度と柔軟性の両立</h2>
+    <p class="lead">R2の欠陥件数が未確定なため、固定価格ではなく上限付きT&amp;Mをご提案します。総額の目安は $96,000〜$130,000（約1,440万〜1,950万円）。各フェーズの実績工数と残予算は週次で共有します。</p>
+  </section>
+
+  <section class="slide">
+    <div class="kicker">WHY US</div>
+    <h2>選ばれる理由：確実に進める</h2>
+    <ul class="points">
+      <li>前任ベンダーが未完のまま残した経緯を踏まえ、小さく早く結果を見せる進め方</li>
+      <li>各フェーズに明確な完了基準を設定し、途中経過を可視化</li>
+      <li>RFPに記載のない前提（非機能要件・予算レンジ等）を明示し、認識齟齬を事前に防止</li>
+    </ul>
+  </section>
+
+  <section class="slide closing">
+    <div class="kicker">NEXT STEP</div>
+    <h1>ご一緒に、信頼できるダッシュボードを</h1>
+    <p class="lead">ご質問・ご相談はいつでもお受けします。</p>
+  </section>
+
+  <div class="pageno" id="pageno"></div>
+  <div class="hint">← → キーで送る</div>
+</div>
+<script>
+  const slides = document.querySelectorAll('.slide');
+  let i = 0;
+  function render() {
+    slides.forEach((s, idx) => s.classList.toggle('active', idx === i));
+    document.getElementById('pageno').textContent = (i + 1) + ' / ' + slides.length;
+  }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') { i = Math.min(i + 1, slides.length - 1); render(); }
+    if (e.key === 'ArrowLeft') { i = Math.max(i - 1, 0); render(); }
+  });
+  render();
+</script>
+</body>
+</html>

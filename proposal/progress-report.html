@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>進捗レポート — Meridian ワークショップ</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&display=swap"
+    />
+    <style>
+      /* Adapted from the "Claude teaches Claude" process report template (renamed: Progress Report): same design, Meridian's sections. */
+      :root {
+        --ivory: #faf9f5;
+        --slate: #141413;
+        --ink2: #3d3d3a;
+        --clay: #d97757;
+        --clay-d: #a5482b;
+        --oat: #e3dacc;
+        --tint: #f0eee6;
+        --sky: #6a9bcc;
+        --sky-d: #4874a3;
+        --mineral: #629987;
+        --mineral-d: #3d6f60;
+        --olive: #788c5d;
+        --gray: #73726c;
+        --line: rgba(31, 30, 29, 0.12);
+        --sans:
+          "Noto Sans JP", "Hiragino Sans", "Yu Gothic UI", Meiryo,
+          -apple-system, "Segoe UI", system-ui, sans-serif;
+        --head:
+          "Noto Sans JP", "Hiragino Sans", "Yu Gothic UI", Meiryo, sans-serif;
+        --mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      body {
+        font-family: var(--sans);
+        background: var(--ivory);
+        color: var(--slate);
+        line-height: 1.75;
+        -webkit-font-smoothing: antialiased;
+      }
+      a {
+        color: var(--clay-d);
+      }
+      .wrap {
+        max-width: 1080px;
+        margin: 0 auto;
+        padding: 0 32px;
+      }
+      header {
+        background: var(--slate);
+        color: #edebe3;
+        padding: 56px 0 44px;
+        margin-bottom: 52px;
+        background-image:
+          linear-gradient(rgba(250, 249, 245, 0.06) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(250, 249, 245, 0.06) 1px, transparent 1px);
+        background-size: 40px 40px;
+      }
+      .kicker {
+        font-family: var(--mono);
+        font-size: 11.5px;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        color: var(--clay);
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .kicker .bar {
+        width: 30px;
+        height: 2px;
+        background: currentColor;
+      }
+      header h1 {
+        font-family: var(--head);
+        font-size: 38px;
+        font-weight: 700;
+        line-height: 1.3;
+        color: #fff;
+      }
+      header p.sub {
+        font-size: 17px;
+        color: #cfccc2;
+        margin-top: 14px;
+        max-width: 800px;
+      }
+      .hmeta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 40px;
+        margin-top: 34px;
+        padding-top: 24px;
+        border-top: 1px solid rgba(250, 249, 245, 0.2);
+      }
+      .hmeta .k {
+        font-size: 11px;
+        letter-spacing: 0.1em;
+        color: #9b9a92;
+        margin-bottom: 5px;
+      }
+      .hmeta .v {
+        font-size: 15px;
+        font-weight: 500;
+        color: #edebe3;
+      }
+      section {
+        margin-bottom: 60px;
+      }
+      h2 {
+        font-family: var(--head);
+        font-size: 24px;
+        font-weight: 700;
+        margin-bottom: 6px;
+        padding-bottom: 12px;
+        border-bottom: 3px solid var(--slate);
+        display: flex;
+        align-items: baseline;
+        gap: 14px;
+      }
+      h2 .num {
+        font-family: var(--mono);
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--clay);
+      }
+      p {
+        margin-bottom: 12px;
+        color: var(--ink2);
+      }
+      code {
+        font-family: var(--mono);
+        font-size: 0.88em;
+        background: var(--tint);
+        padding: 2px 6px;
+        border-radius: 4px;
+      }
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 14px;
+        margin: 26px 0 8px;
+      }
+      .stat {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-top: 4px solid var(--gray);
+        border-radius: 10px;
+        padding: 18px 20px;
+      }
+      .stat .v {
+        font-family: var(--head);
+        font-size: 34px;
+        font-weight: 700;
+        line-height: 1.1;
+      }
+      .stat .v small {
+        font-size: 17px;
+        color: var(--gray);
+        font-weight: 500;
+      }
+      .stat .k {
+        font-size: 13px;
+        color: var(--gray);
+        margin-top: 8px;
+        line-height: 1.5;
+      }
+      .stat.c {
+        border-top-color: var(--clay);
+      }
+      .stat.s {
+        border-top-color: var(--sky);
+      }
+      .stat.m {
+        border-top-color: var(--mineral);
+      }
+      .stat.d {
+        border-top-color: var(--slate);
+      }
+      .box {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-left: 4px solid var(--gray);
+        border-radius: 0 10px 10px 0;
+        padding: 16px 20px;
+        margin: 14px 0;
+      }
+      .box .h {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: var(--gray);
+        margin-bottom: 6px;
+      }
+      .box p:last-child {
+        margin-bottom: 0;
+      }
+      .box.c {
+        border-left-color: var(--clay);
+      }
+      .box.c .h {
+        color: var(--clay-d);
+      }
+      .box.m {
+        border-left-color: var(--mineral);
+      }
+      .box.m .h {
+        color: var(--mineral-d);
+      }
+      .box.s {
+        border-left-color: var(--sky);
+      }
+      .box.s .h {
+        color: var(--sky-d);
+      }
+      .chip {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        padding: 3px 8px;
+        border-radius: 4px;
+        white-space: nowrap;
+        vertical-align: middle;
+      }
+      .chip.c {
+        background: #d9775722;
+        color: var(--clay-d);
+      }
+      .chip.m {
+        background: #62998722;
+        color: var(--mineral-d);
+      }
+      .chip.s {
+        background: #6a9bcc22;
+        color: var(--sky-d);
+      }
+      .chip.n {
+        background: var(--tint);
+        color: var(--gray);
+      }
+      .chip.k {
+        background: var(--slate);
+        color: #fff;
+        font-family: var(--mono);
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        background: #fff;
+        margin: 18px 0;
+        font-size: 14.5px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      th,
+      td {
+        text-align: left;
+        padding: 11px 14px;
+        border-bottom: 1px solid var(--line);
+        vertical-align: top;
+      }
+      th {
+        font-size: 11.5px;
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        color: var(--gray);
+        background: var(--tint);
+        border-bottom: 2px solid var(--slate);
+        white-space: nowrap;
+      }
+      tbody tr:last-child td {
+        border-bottom: none;
+      }
+      .tl {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 8px 18px;
+        margin: 18px 0;
+      }
+      .trow {
+        display: grid;
+        grid-template-columns: 34px minmax(0, 1.6fr) minmax(0, 2fr) 96px;
+        gap: 12px;
+        align-items: center;
+        padding: 7px 0;
+        border-bottom: 1px solid var(--line);
+        font-size: 14px;
+      }
+      .trow:last-child {
+        border-bottom: none;
+      }
+      .trow .n {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--gray);
+      }
+      .trow .t small {
+        color: var(--gray);
+      }
+      .bars {
+        position: relative;
+        height: 16px;
+      }
+      .bars i {
+        position: absolute;
+        left: 0;
+        top: 2px;
+        height: 5px;
+        border-radius: 3px;
+        background: var(--oat);
+      }
+      .bars b {
+        position: absolute;
+        left: 0;
+        top: 9px;
+        height: 5px;
+        border-radius: 3px;
+        background: var(--clay);
+      }
+      .trow .m {
+        font-family: var(--mono);
+        font-size: 12px;
+        text-align: right;
+        color: var(--ink2);
+      }
+      .phead {
+        font-size: 12px;
+        letter-spacing: 0.06em;
+        color: var(--clay-d);
+        padding: 12px 0 4px;
+        font-weight: 700;
+      }
+      .legend {
+        font-size: 12.5px;
+        color: var(--gray);
+        display: flex;
+        gap: 18px;
+        margin-top: -6px;
+      }
+      .legend span::before {
+        content: "";
+        display: inline-block;
+        width: 18px;
+        height: 5px;
+        border-radius: 3px;
+        margin-right: 6px;
+        vertical-align: middle;
+      }
+      .legend .a::before {
+        background: var(--oat);
+      }
+      .legend .b::before {
+        background: var(--clay);
+      }
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 14px;
+        margin: 18px 0;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 18px 20px;
+      }
+      .card h3 {
+        font-family: var(--head);
+        font-size: 18px;
+        font-weight: 700;
+        margin: 6px 0 8px;
+        line-height: 1.4;
+      }
+      .card p {
+        font-size: 14.5px;
+        margin: 0 0 8px;
+      }
+      .card .meta {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+      h3.sub {
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        color: var(--gray);
+        margin: 26px 0 4px;
+      }
+      .pairs {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+        align-items: stretch;
+        margin: 10px 0 6px;
+      }
+      .pairs .box {
+        margin: 0;
+        height: 100%;
+      }
+      .files {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin: 18px 0;
+      }
+      .file {
+        background: var(--slate);
+        color: #edebe3;
+        border-radius: 10px;
+        padding: 14px 16px;
+        text-decoration: none;
+        display: block;
+      }
+      .file .p {
+        font-family: var(--mono);
+        font-size: 12.5px;
+        color: #e8a48c;
+        word-break: break-all;
+        margin-bottom: 6px;
+      }
+      .file .d {
+        font-size: 13px;
+        color: #cfccc2;
+        line-height: 1.5;
+      }
+      a.file:hover {
+        outline: 2px solid var(--clay);
+      }
+      ul.plain {
+        margin: 8px 0 12px 22px;
+      }
+      ul.plain li {
+        margin-bottom: 6px;
+        color: var(--ink2);
+      }
+      footer {
+        border-top: 1px solid var(--line);
+        padding: 22px 0 60px;
+        color: var(--gray);
+        font-size: 13px;
+      }
+      @media (max-width: 820px) {
+        .wrap {
+          padding: 0 16px;
+        }
+        .stats {
+          grid-template-columns: 1fr 1fr;
+        }
+        .cards,
+        .files,
+        .pairs {
+          grid-template-columns: 1fr;
+        }
+        header h1 {
+          font-size: 28px;
+        }
+        .trow {
+          grid-template-columns: 30px 1fr 70px;
+        }
+        .trow .bars {
+          display: none;
+        }
+      }
+      @media print {
+        header {
+          -webkit-print-color-adjust: exact;
+          print-color-adjust: exact;
+        }
+        section {
+          break-inside: avoid;
+        }
+      }
+      /* Long sentences, paths and hashes must wrap inside their card or cell instead of widening the grid. */
+      .cards > .card { min-width: 0; }
+      .card p, .card h3, .card .check, td, .box p { overflow-wrap: anywhere; }
+      td code, .card code { word-break: break-all; }
+      .card .check { font-size: 13.5px; color: var(--ink2); line-height: 1.6; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--line); }
+      .card .check .chip { margin-right: 8px; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <div class="kicker">
+          <span class="bar"></span
+          ><span>進捗レポート · Meridian ワークショップ</span>
+        </div>
+        <h1 id="h1">今日あなたがやったこと</h1>
+        <p class="sub" id="sub"></p>
+        <div class="hmeta" id="hmeta"></div>
+      </div>
+    </header>
+    <div class="wrap" id="root"></div>
+    <div class="wrap"><footer id="foot"></footer></div>
+
+    <script id="data" type="application/json">
+      {"generatedAt":"2026-11-10T02:54:49.613Z","timeline":[{"id":"00-welcome","title":"ようこそ · 環境の確認と「いまどこ？」","plannedMinutes":3,"startedAt":"2026-11-10T01:25:13.466Z","endedAt":"2026-11-10T01:30:12.709Z","actualMinutes":5,"forced":false},{"id":"01-intro-deck","title":"読む: このワークショップの進め方 · 紹介スライド","plannedMinutes":4,"startedAt":"2026-11-10T01:30:12.709Z","endedAt":"2026-11-10T01:33:41.004Z","actualMinutes":3.5,"forced":false},{"id":"02-page-rfp","title":"読む: RFP とは · 一般的な流れと、応札側が考えること","plannedMinutes":4,"startedAt":"2026-11-10T01:33:41.004Z","endedAt":"2026-11-10T01:42:27.602Z","actualMinutes":8.8,"forced":false},{"id":"03-kickoff","title":"RFP を読む · @ で読み込み、私たちの理解を整理する","plannedMinutes":4,"startedAt":"2026-11-10T01:42:27.602Z","endedAt":"2026-11-10T01:48:02.412Z","actualMinutes":5.6,"forced":false},{"id":"04-analyze","title":"穴を探す · 決めないと見積もれない点と、引き継ぎメモ","plannedMinutes":6,"startedAt":"2026-11-10T01:48:02.412Z","endedAt":"2026-11-10T01:50:59.847Z","actualMinutes":3,"forced":false},{"id":"05-proposal","title":"提案の方針を決める · 提案書は Claude が一気に書く","plannedMinutes":8,"startedAt":"2026-11-10T01:50:59.847Z","endedAt":"2026-11-10T02:03:08.103Z","actualMinutes":12.1,"forced":false},{"id":"06-deck","title":"HTML ページとスライドにする · 提案書を見せる形に","plannedMinutes":5,"startedAt":"2026-11-10T02:03:08.103Z","endedAt":"2026-11-10T02:05:50.037Z","actualMinutes":2.7,"forced":false},{"id":"07-env","title":"受注 · 環境を確認し、/start でアプリを起動","plannedMinutes":6,"startedAt":"2026-11-10T02:05:50.037Z","endedAt":"2026-11-10T02:10:17.390Z","actualMinutes":4.5,"forced":false},{"id":"08-plan-r1","title":"R1 の原因を調べて計画する · 概要ページで期間や場所を選んでも反映されない","plannedMinutes":6,"startedAt":"2026-11-10T02:10:17.390Z","endedAt":"2026-11-10T02:17:20.187Z","actualMinutes":7,"forced":false},{"id":"09-build-r1","title":"R1 を直す · 概要ページの KPI をフィルターに連動させる","plannedMinutes":22,"startedAt":"2026-11-10T02:17:20.187Z","endedAt":"2026-11-10T02:38:39.154Z","actualMinutes":21.3,"forced":false},{"id":"10-review","title":"コードレビュー · サブエージェントの指摘を選んで直す","plannedMinutes":10,"startedAt":"2026-11-10T02:38:39.154Z","endedAt":"2026-11-10T02:49:40.955Z","actualMinutes":11,"forced":false}],"tests":{"passed":38,"failed":2,"baselineFailed":2},"deliverables":[{"name":"capabilities-deck.html","kind":"html","url":"/proposal/capabilities-deck.html"},{"name":"progress-report.html","kind":"html","url":"/proposal/progress-report.html"},{"name":"proposal.html","kind":"html","url":"/proposal/proposal.html"},{"name":"proposal.md","kind":"md","url":"/proposal/proposal.md"}],"state":{"title":"Meridian ワークショップ — RFP への応札から最初の納品まで","startedAt":"2026-11-10T01:25:13.466Z","elapsedMin":90,"totalMinutes":85,"budgetMinutes":90,"plannedUntilNow":85,"plannedBeforeNow":78,"current":"11-wrap","finishedAt":null,"hint":"進捗レポートがブラウザで開きます。今日の成果、予定と実績、次フェーズへの引き継ぎがまとまっています。","deliverables":[{"name":"capabilities-deck.html","kind":"html","url":"/proposal/capabilities-deck.html"},{"name":"progress-report.html","kind":"html","url":"/proposal/progress-report.html"},{"name":"proposal.html","kind":"html","url":"/proposal/proposal.html"},{"name":"proposal.md","kind":"md","url":"/proposal/proposal.md"}],"parts":[{"id":"p1","title":"第1幕 · RFP に応札する（提案書づくり）","minutes":34},{"id":"p2","title":"第2幕 · 受注した案件を遂行する（概要ページの不具合の修正、コードレビュー）","minutes":51}],"steps":[{"id":"00-welcome","n":0,"part":"p1","title":"ようこそ · 環境の確認と「いまどこ？」","minutes":3,"where":"cli","page":"map.html","doneAt":"2026-11-10T01:30:12.709Z","status":"done"},{"id":"01-intro-deck","n":1,"part":"p1","title":"読む: このワークショップの進め方 · 紹介スライド","minutes":4,"where":"browser","page":"intro/deck.html","doneAt":"2026-11-10T01:33:41.004Z","status":"done"},{"id":"02-page-rfp","n":2,"part":"p1","title":"読む: RFP とは · 一般的な流れと、応札側が考えること","minutes":4,"where":"browser","page":"01-rfp-process.html","doneAt":"2026-11-10T01:42:27.602Z","status":"done"},{"id":"03-kickoff","n":3,"part":"p1","title":"RFP を読む · @ で読み込み、私たちの理解を整理する","minutes":4,"where":"cli","page":"02-rfp-meridian.html","doneAt":"2026-11-10T01:48:02.412Z","status":"done"},{"id":"04-analyze","n":4,"part":"p1","title":"穴を探す · 決めないと見積もれない点と、引き継ぎメモ","minutes":6,"where":"cli","page":null,"doneAt":"2026-11-10T01:50:59.847Z","status":"done"},{"id":"05-proposal","n":5,"part":"p1","title":"提案の方針を決める · 提案書は Claude が一気に書く","minutes":8,"where":"cli","page":null,"doneAt":"2026-11-10T02:03:08.103Z","status":"done"},{"id":"06-deck","n":6,"part":"p1","title":"HTML ページとスライドにする · 提案書を見せる形に","minutes":5,"where":"cli","page":null,"doneAt":"2026-11-10T02:05:50.037Z","status":"done"},{"id":"07-env","n":7,"part":"p2","title":"受注 · 環境を確認し、/start でアプリを起動","minutes":6,"where":"cli","page":null,"doneAt":"2026-11-10T02:10:17.390Z","status":"done"},{"id":"08-plan-r1","n":8,"part":"p2","title":"R1 の原因を調べて計画する · 概要ページで期間や場所を選んでも反映されない","minutes":6,"where":"cli","page":null,"doneAt":"2026-11-10T02:17:20.187Z","status":"done"},{"id":"09-build-r1","n":9,"part":"p2","title":"R1 を直す · 概要ページの KPI をフィルターに連動させる","minutes":22,"where":"cli","page":null,"doneAt":"2026-11-10T02:38:39.154Z","status":"done"},{"id":"10-review","n":10,"part":"p2","title":"コードレビュー · サブエージェントの指摘を選んで直す","minutes":10,"where":"cli","page":null,"doneAt":"2026-11-10T02:49:40.955Z","status":"done"},{"id":"11-wrap","n":11,"part":"p2","title":"まとめ · 進捗レポート（次フェーズへの引き継ぎつき）","minutes":7,"where":"cli","page":null,"doneAt":null,"status":"current"}],"notes":{"kickoff":"done","gaps":"Reportsの欠陥の中身不明/UIの現在の標準が未定義/予算レンジなし/主要フロー未特定","decisions":"上限付きT&M/R1→R4・R5→R2→R3/希望項目は今回提案しない/確実に進める","reports_issue":"金額(売上)系は変わるが、在庫回転率・出荷完了・注文充足率・平均処理時間などのKPIはフィルターを変えても変わらない","r1_scope":"出荷完了/注文充足率/平均処理時間はallOrdersから計算、在庫回転率は計算せず—表示にして次フェーズで先方確認","review":"直した: 日付isNaNチェック/Promise.all化/var整理/category・statusのNone対応。次フェーズに回した: QUARTER_MAP重複、在庫回転率カードのstyle表記","review_findings":"🔴|orderHealthMetricsの日付計算にisNaNチェックがない|Dashboard.vue:387-414|不正日付でKPIがNaN表示になる|修正|isNaNガードを追加 ;; 🟡|Reports.vueのAPI呼び出しが直列await|Reports.vue:loadData|不要なレイテンシ|修正|Promise.allに変更 ;; 🟡|apply_filtersがNoneで500になりうる|server/main.py:apply_filters|category/statusがNoneだとAttributeError|修正|(item.get('category') or '').lower()に変更 ;; 🟡|Composition API移行後もvarが残存|Reports.vue各関数|保守性|修正|let/constに変更 ;; 🟢|QUARTER_MAPが定義済みなのに未使用|server/main.py:get_quarterly_reports|重複コード|次フェーズ|手書き四半期判定をQUARTER_MAPに置き換え(未実施) ;; 🟢|在庫回転率カードのstyle表記が不揃い|Dashboard.vue:21|他カードは:styleバインディング|次フェーズ|意図的な0%固定とわかるようにする(未実施)"}},"git":{"commits":[{"hash":"8e75292","subject":"概要: KPI をフィルター済みのデータから計算し、期間・場所の選択を反映"},{"hash":"a662967","subject":"Reports: 拠点・カテゴリ・ステータスのフィルターを反映"},{"hash":"723425d","subject":"R1: レビュー指摘の修正"}],"stat":"6 files changed, 189 insertions(+), 170 deletions(-)"}}
+    </script>
+    <script id="story" type="application/json">
+      {"headline":"RFPの読解から、提案書・スライドづくり、受注後の概要ページ改修とコードレビューまでを1セッションで通した","summary":"Meridian Components社のRFP(MC-2026-0417)を読み解き、穴を洗い出したうえで提案の方針を4つ決め、提案書・HTMLページ・ケイパビリティスライドを仕上げた。受注後はR1(概要ページのKPIがフィルターに連動しない不具合)の原因を調べて計画し、修正とコミットまで行った。時間が余ったため任意のReports改修にも着手し、最後にcode-reviewerサブエージェントのレビューを受けて指摘を選んで直した。","takeaway":"提案書の判断(上限付きT&M・R1優先・在庫回転率は定義未確定として先方確認)が、そのまま実装の判断軸として最後まで一貫していた","timelineNote":"85分経過で予算90分に対しほぼ予定どおり。RFPの背景理解(STEP02)と提案方針の決定(STEP05)でやや時間を使ったが、提案書に複数回の手直し(コスト・リターンの明確化、具体的な金額、円換算、非機能要件とエスカレーション条項)を重ねた分であり、時間超過は軽微だった。R1修正(STEP09)は時間に余裕があったため、任意項目のReportsページのフィルター連動にも着手した。","proposalNote":"参加者が選んだ「上限付きT&M」「R1→R4・R5→R2→R3の順序」「希望項目(D1〜D3)は今回提案しない」という判断が、そのまま提案書のスケジュールと価格セクションの骨格になった。「コストとリターンの対応がわかりにくい」という指摘を受けて、要件対応表に期待される効果列と、フェーズ別の工数・金額(ドルと円換算)を追加し、説得力を補強した。","changes":[{"area":"提案書","title":"提案書一式を追加","what":"RFP MC-2026-0417への応札資料として、提案書本文(proposal.md)、読む用のHTMLページ、ケイパビリティプレゼンテーション用スライドを作成した。","commit":"b107345","check":"ブラウザでproposal.htmlとcapabilities-deck.htmlを開き、表示崩れがないことを参加者が確認した。"},{"area":"概要","title":"KPIをフィルター済みのデータから計算し、期間・場所の選択を反映","what":"出荷完了・注文充足率・平均処理時間をallOrdersから算出するよう変更。在庫回転率は実データでは目標値と比較可能な定義が作れないため計算をやめ、「—(定義を確認中)」表示にした。","commit":"8e75292","check":"ブラウザで期間・拠点フィルターを切り替え、3つのKPIが変化し、在庫回転率は「—」のまま変わらないことを参加者が確認した。"},{"area":"Reports","title":"拠点・カテゴリ・ステータスのフィルターを反映","what":"/api/reports/quarterly と /api/reports/monthly-trends に warehouse/category/status のフィルターパラメータを追加し、Reports.vueをOptions APIからComposition APIに書き換えてuseFiltersとwatchでつないだ。期間(月)フィルターは月次・四半期トレンドの目的と矛盾するため意図的に対象外とした。","commit":"a662967","check":"cd tests && uv run --project ../server pytest -q で元から失敗している2件以外が全てパスすることを確認し、ブラウザでもフィルター連動を確認した。"},{"area":"レビュー指摘","title":"code-reviewerサブエージェントの指摘を選んで修正","what":"日付のisNaNチェック追加、Reports.vueのAPI呼び出しのPromise.all化、varのlet/const整理、apply_filtersのcategory/statusがNoneでも500にならないようにする修正を行った。","commit":"723425d","check":"pytestを再実行し、修正前と同じく元からの2件以外は全てパスすることを確認した。"}],"review":{"note":"code-reviewerサブエージェントに、tutor-baseからの差分(client/とserver/のA・B範囲)をレビュー依頼した。範囲外(Reportsの他の欠陥、発注推奨機能、全面的なComposition API移行、ブラウザテスト、アーキテクチャ文書)は次フェーズ向けとして明記するよう指示した。","findings":[{"severity":"🔴","title":"orderHealthMetricsの日付計算にisNaNチェックがない","where":"client/src/views/Dashboard.vue:387-414","problem":"不正な日付文字列が1件でもあるとtotalDaysがNaNに汚染され、新しく追加した「平均処理時間」KPIがNaN表示になりうる。","decision":"修正","reason":"R1の目的(KPIが正しく追従すること)を損なうリスクが高いため、推奨どおり直した。","fix":"orderDate/deliveryDateと expected_delivery の両方にisNaN(getTime())のガードを追加した。"},{"severity":"🟡","title":"Reports.vueのAPI呼び出しが直列await","where":"client/src/views/Reports.vue (loadData)","problem":"互いに依存しない2本のリクエストを直列実行しており、フィルター変更のたびに不要なレイテンシが発生する。","decision":"修正","reason":"Dashboard.vueは既にPromise.allを使っており、一貫性の観点から揃えた。","fix":"Promise.allで2つのAPI呼び出しを並列化した。"},{"severity":"🟡","title":"apply_filtersがcategory/statusにNoneを渡されると500になりうる","where":"server/main.py (apply_filters)","problem":"item.get('category', '')はキーが存在しない場合しかデフォルト値を返さず、値がNoneのレコードがあるとNone.lower()でAttributeErrorになる。今回フィルター対応で新たに2エンドポイントから呼ばれるようになり依存範囲が広がった。","decision":"修正","reason":"今回の変更で依存範囲が広がったため、顕在化していなくても直しておく判断をした。","fix":"(item.get('category') or '').lower() の形に変更し、status側も同様に揃えた。"},{"severity":"🟡","title":"Composition API移行後もvarが残存","where":"client/src/views/Reports.vue 各関数","problem":"Options API→Composition APIへの書き換えで関数はsetup()に移したが、中身はvarベースのままで、プロジェクトの規約(let/constに統一)に反する。","decision":"修正","reason":"今回のリファクタリングで触れた関数なので、ついでに揃えた。","fix":"formatNumber/formatMonth/getBarHeight/getChangeValue/getChangeClass/getGrowthRateのvarをlet/constに置き換えた。"},{"severity":"🟢","title":"QUARTER_MAPが定義済みなのに未使用","where":"server/main.py (get_quarterly_reports)","problem":"ファイル冒頭に四半期マッピングのQUARTER_MAPがあるのに、quarterly集計関数では2025年決め打ちの手書き判定を別に行っており重複している。","decision":"次フェーズ","reason":"今日の修正範囲(フィルターパラメータ追加)には影響しない整理であり、優先度が低いため見送った。"},{"severity":"🟢","title":"在庫回転率カードのstyle表記が他カードと不揃い","where":"client/src/views/Dashboard.vue:21","problem":"他のKPIカードはすべて:styleの動的バインディングだが、このカードだけstyle=\"width: 0%\"と直書きしており、後任が誤って削除しにくい形になっていない。","decision":"次フェーズ","reason":"表示上の軽微な不整合であり、R1の本質的な修正には関係しないため見送った。"}],"fixCommit":"723425d"},"decisions":[{"title":"価格形態は上限付きT&M","detail":"Reportsモジュールの欠陥件数が「少なくとも8件」としか分からず範囲が確定しないため、固定価格ではなく上限付きT&Mを選んだ。"},{"title":"納品順序はR1→R4・R5→R2→R3","detail":"現場の信頼回復(R1)を最初に、その後IT部門が変更を承認できる土台(R4・R5)を作ってからR2・R3に進む順序にした。"},{"title":"希望項目(D1〜D3)は今回提案しない","detail":"UIモダナイズ・i18n拡張・ダークモードは必須項目完了後の拡張フェーズとして切り出し、今回の提案スコープからは外した。"},{"title":"在庫回転率は計算せず「—」表示にする","detail":"在庫金額に対し受注額が約71倍(数量ベースでも約16倍)あり、どの定義でも目標値4.5と比較可能な値にならないことを実データで確認した。もっともらしい数字で埋めず、定義確認を先方との定例会のタスクとして次フェーズに送った。"},{"title":"レビュー指摘は🔴🟡の4件を修正、🟢の2件は次フェーズへ","detail":"影響範囲が広がった指摘(日付バリデーション、API並列化、None対応、var整理)を優先し、表記の不揃いや既存の重複コードは優先度が低いとして見送った。"}],"corrections":[{"title":"作業ディレクトリの移動に気づかずコマンドが失敗した","detail":"server/dataディレクトリでPythonコマンドを実行した後、cwdが移動したままtutor.mjs noteを実行してMODULE_NOT_FOUNDエラーになった。絶対パスに戻すcdを挟んで解消した。"},{"title":"AskUserQuestionの呼び出し形式を誤った","detail":"パラメータを{\"raw\": \"...\"}というラッパーで渡してしまい、InputValidationErrorになった。正しいJSON形式で送り直した。"},{"title":"decisionsの記録を忘れてnextが一度失敗した","detail":"提案書とHTML/スライドを作り終えた後にnextを実行したところ、4つの判断(decisions)を記録し忘れていたためFAILした。すぐに記録して再実行した。"},{"title":"提案書の説得力は参加者の指摘で段階的に上がった","detail":"初稿はコストとリターンの対応が分かりにくく、参加者からの指摘を受けて期待される効果列、具体的な工数・金額、円換算、非機能要件とエスカレーション条項を順に追加した。最初から網羅できていなかった。"}],"nextPhase":[{"req":"R1 概要ページ","title":"在庫回転率の定義が未確定","status":"在庫回転率カードは「—(定義を確認中)」表示のままで、計算自体を行っていない。","evidence":"client/src/views/Dashboard.vue:18-19","action":"先方との定例会で分母・分子の定義を確定したうえで計算式を実装する。","priority":"高","estimate":"0.5日","question":"在庫回転率はどの定義(金額ベース/数量ベース、対象期間)で計算すべきか"},{"req":"R1 概要ページ","title":"レビューで次フェーズに回した軽微な指摘が残っている","status":"QUARTER_MAPの重複コードと、在庫回転率カードのstyle表記の不揃いが未解消。","evidence":"server/main.py get_quarterly_reports、client/src/views/Dashboard.vue:21","action":"R2着手時にまとめて解消する。","priority":"低","estimate":"0.5日未満"},{"req":"R2 Reportsモジュール","title":"四半期判定が2025年決め打ち","status":"get_quarterly_reportsが'2025-01'のような文字列一致で四半期を判定しており、2025年以外の受注は集計から漏れる。","evidence":"server/main.py get_quarterly_reports","action":"ファイル冒頭で定義済みのQUARTER_MAPを使うか、年度を動的に算出する形に直す。","priority":"中","estimate":"0.5日"},{"req":"R2 Reportsモジュール","title":"通貨表示が$固定","status":"Reports.vueの金額表示がすべて'$'のハードコードで、日本語/JPYロケールでもドル表記のまま。","evidence":"client/src/views/Reports.vue のformatNumber呼び出し箇所(テーブル・グラフ・サマリー統計)","action":"utils/currency.jsのformatCurrencyに統一する。","priority":"高","estimate":"0.5〜1日"},{"req":"R2 Reportsモジュール","title":"i18n未対応","status":"Reports.vueにt()の呼び出しが一つもなく、辞書ファイルにreportsセクション自体が存在しない。","evidence":"client/src/locales/ja.js, en.js(reportsキーなし)","action":"他ビューと同じ辞書構造に合わせて文言を移す。","priority":"高","estimate":"1日"},{"req":"R2 Reportsモジュール","title":"formatNumberに入力検証がない","status":"nullやundefinedを渡すとtoString()で例外が発生し、画面全体が止まるリスクがある。","evidence":"client/src/views/Reports.vue formatNumber","action":"入力検証を追加するか、utils/currency.jsのformatCurrencyに統合する。","priority":"中","estimate":"0.5日"},{"req":"R2 Reportsモジュール","title":"v-forのkeyに配列のindexを使っている","status":"並び替えが発生した場合にDOM要素が誤って再利用される可能性がある。","evidence":"client/src/views/Reports.vue:28,51,82","action":"quarterやmonthなど一意な値をkeyに変更する。","priority":"低","estimate":"0.5日未満"},{"req":"R2 Reportsモジュール","title":"エラー状態がリロード時にリセットされない","status":"一度エラーが表示されると、その後フィルター変更で読み込みに成功してもエラー表示が残る可能性がある。","evidence":"client/src/views/Reports.vue loadData(try冒頭でerror.valueをnullにしていない)","action":"loadDataの冒頭でerror.value = nullを追加する。","priority":"低","estimate":"0.25日"},{"req":"R3 発注推奨","title":"未着手。Restockingビュー自体が存在しない","status":"在庫水準・需要予測・予算上限から発注を推奨する機能はまだない。「Create PO」ボタンを押しても何も起きない状態(下記「その他の発見」参照)。","evidence":"client/src/views/Dashboard.vue:289(PurchaseOrderModalの参照のみ)、server/main.py(該当エンドポイントなし)","action":"提案書フェーズ4として、下記3点を先方と確定したうえで設計・実装する。","priority":"高","estimate":"4〜5日","question":"予算内での発注優先順位の決め方、部分発注を許容するか、需要予測データがない品目をどう扱うか"},{"req":"R4 ブラウザテスト","title":"E2Eテストが存在しない","status":"testsディレクトリ配下はバックエンドのpytestのみで、ブラウザ経由のE2Eテストが一つもない。既存のバックエンドテストも2件が元から失敗している(demandデータの不整合)。","evidence":"tests/backend/配下にE2E相当のテストなし。pytest実行結果: 2 failed, 38 passed","action":"R1の主要フロー(フィルター操作)からE2Eテストの整備を始め、既存の2件の失敗原因も合わせて調査する。","priority":"高","estimate":"2〜3日"},{"req":"R5 アーキテクチャ文書","title":"未着手。引き継ぎメモとコードに食い違いがある","status":"vendor-handoff.mdは技術スタックを「Vue3 + Composition API」と記載しているが、今日のレビューまでReports.vueだけがOptions APIのままだった。引き継ぎメモは一次資料として扱いつつ実コードと突き合わせる必要がある。","evidence":"docs/rfp/vendor-handoff.md 技術スタック節、(修正前の)client/src/views/Reports.vue","action":"現状のコードを実地調査したうえでアーキテクチャ文書を新規作成し、引き継ぎメモの古い記述も更新する。","priority":"中","estimate":"1〜2日"},{"req":"D1 UIモダナイズ","title":"未着手","status":"提案書で希望項目として今回の提案スコープからは外した範囲。","evidence":"proposal/proposal.md 前提条件A2","action":"R1〜R5完了後、拡張フェーズとして着手を検討する。","priority":"低","estimate":"提案書フェーズ外"},{"req":"D2 国際化対応","title":"未着手(Reportsのi18n欠落は上記で先行対応予定)","status":"東京倉庫向けの残りモジュールへのi18n拡張は未着手。","evidence":"proposal/proposal.md","action":"Reportsのi18n対応と合わせて対象範囲を再検討する。","priority":"低","estimate":"提案書フェーズ外"},{"req":"D3 ダークモード","title":"未着手","status":"提案書で希望項目として今回の提案スコープからは外した範囲。","evidence":"proposal/proposal.md 前提条件A2","action":"R1〜R5完了後、拡張フェーズとして着手を検討する。","priority":"低","estimate":"提案書フェーズ外"},{"req":"その他の発見","title":"「Create PO」ボタンが機能しない","status":"バックログの「Create PO」ボタンを押しても、PurchaseOrderModalコンポーネントファイルが実在せず、/api/purchase-ordersエンドポイントもserver/main.pyに存在しないため何も起きない。","evidence":"client/src/views/Dashboard.vue:289(PurchaseOrderModalの参照)、client/src/components/配下に該当ファイルなし、server/main.py(該当エンドポイントなし)","action":"R3着手時に、モーダルコンポーネントとAPIエンドポイントをあわせて実装する。","priority":"高","estimate":"R3の見積もりに含める"},{"req":"その他の発見","title":"/api/tasksが常に404","status":"client/src/api.jsにgetTasks/createTask/deleteTask/toggleTaskが定義されているが、server/main.pyに対応するエンドポイントが存在せず、呼び出すたびに404が出る。","evidence":"client/src/api.js (getTasks等)、server/main.py(該当エンドポイントなし)","action":"タスク機能が今後も必要かを確認し、不要なら呼び出しごと削除、必要ならエンドポイントを実装する。","priority":"低","estimate":"0.5日","question":"タスク機能はRFPに記載がないが、今後も必要な機能か"}],"handover":{"note":"今回のセッションではR1(概要ページ)の本体修正と、時間の余りを使ったReportsのフィルター連動、その後のレビュー指摘修正までを納品した。残るR2の個別欠陥、R3、R4、R5、D1〜D3はすべて未着手で、次フェーズに引き継ぐ。","schedule":"提案書のフェーズ1(R1)はほぼ完了、フェーズ2(R4・R5)はこれから着手、フェーズ3(R2)はReportsのフィルター連動のみ先行対応した状態。","questions":["在庫回転率はどの定義(金額ベース/数量ベース、対象期間)で計算すべきか","予算内での発注優先順位の決め方、部分発注を許容するか、需要予測データがない品目をどう扱うか","タスク機能はRFPに記載がないが、今後も必要な機能か"]},"features":[{"name":"@ によるファイル参照","who":"あなた","note":"RFP本文(docs/rfp/MC-2026-0417.md)をワンコマンドで読み込み、理解を揃えるところから始めた。"},{"name":"AskUserQuestion","who":"Claude","note":"提案方針の4択(価格形態・納品順・希望項目・勝ち筋)や、在庫回転率の計算方針、レビュー指摘の修正範囲選択に使った。"},{"name":"Plan Mode (Shift+Tab)","who":"あなた","note":"R1の原因調査と修正計画を、コードを一切編集せずに合意してから実装に入った。"},{"name":"/start","who":"あなた","note":"フロントエンド・バックエンドの開発サーバーを1コマンドで起動した。"},{"name":"サブエージェント (code-reviewer)","who":"Claude","note":"作業した本人とは別の目で、tutor-baseからの差分をレビューさせた。"},{"name":"バックグラウンド実行","who":"Claude","note":"サーバーをバックグラウンドで起動し、会話を止めずに動作確認とテストを進めた。"},{"name":"作業ブランチ (git switch -c)","who":"Claude","note":"fix/overview-filtersを切り、mainブランチを汚さずに作業した。"},{"name":"関心事ごとのコミット分割","who":"あなた","note":"提案書と実装を別コミットに分ける判断をし、レビュー修正もさらに別コミットにした。"}]}
+    </script>
+    <script>
+      // D: the recorded run (tutor report-data). S: the narrative Claude wrote (tutor/state/story.json). Numbers come only from D.
+      const D = JSON.parse(document.getElementById("data").textContent);
+      const S = JSON.parse(document.getElementById("story").textContent);
+      const $ = (tag, cls, html) => {
+        const e = document.createElement(tag);
+        if (cls) e.className = cls;
+        if (html != null) e.innerHTML = html;
+        return e;
+      };
+      const esc = (s) =>
+        String(s == null ? "" : s).replace(
+          /[&<>"]/g,
+          (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[c],
+        );
+      const root = document.getElementById("root");
+      let secNo = 0;
+      function section(title, build) {
+        const s = $("section");
+        secNo++;
+        s.appendChild(
+          $(
+            "h2",
+            null,
+            `<span class="num">${String(secNo).padStart(2, "0")}</span>${esc(title)}`,
+          ),
+        );
+        build(s);
+        root.appendChild(s);
+      }
+      const list = (items) =>
+        `<ul class="plain">${items.map((x) => `<li>${esc(x)}</li>`).join("")}</ul>`;
+      const notes = D.state.notes || {},
+        tl = D.timeline || [],
+        steps = D.state.steps || [];
+      const activeMin = Math.round(
+        tl.reduce((a, r) => a + (r.actualMinutes || 0), 0),
+      );
+      const fmtT = (iso) =>
+        iso
+          ? new Date(iso).toLocaleTimeString("ja-JP", {
+              hour: "2-digit",
+              minute: "2-digit",
+            })
+          : "";
+      const budget = D.state.budgetMinutes || 90;
+
+      // masthead
+      document.getElementById("h1").textContent =
+        S.headline || "今日あなたがやったこと";
+      document.getElementById("sub").textContent =
+        S.summary ||
+        "RFP への応札から、受注した案件の最初の改修とコードレビューまで。";
+      const started = D.state.startedAt ? new Date(D.state.startedAt) : null;
+      const doneN =
+        steps.filter((x) => x.status === "done").length +
+        (D.state.current &&
+        D.state.current === (steps[steps.length - 1] || {}).id
+          ? 1
+          : 0);
+      document.getElementById("hmeta").innerHTML = [
+        [
+          "日付",
+          started
+            ? started.toLocaleDateString("ja-JP", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            : "",
+        ],
+        [
+          "案件",
+          "Meridian Components · 在庫ダッシュボード（RFP MC-2026-0417）",
+        ],
+        [
+          "完了したステップ",
+          `${steps.length} 中 ${Math.min(doneN, steps.length)}`,
+        ],
+        ["ステップにかけた時間", `${activeMin} 分 / 予算 ${budget} 分`],
+      ]
+        .map(
+          ([k, v]) =>
+            `<div><div class="k">${esc(k)}</div><div class="v">${esc(v)}</div></div>`,
+        )
+        .join("");
+
+      // 01 summary
+      section("概要", (s) => {
+        const commits = (D.git && D.git.commits) || [];
+        const t = D.tests || {};
+        const deliv = (D.deliverables || []).filter(
+          (f) => f.name !== "progress-report.html",
+        );
+        const stats = $("div", "stats");
+        stats.innerHTML = `
+    <div class="stat c"><div class="v">${deliv.length}</div><div class="k">成果物（proposal/）<br>提案書・ページ・スライド・メモ</div></div>
+    <div class="stat m"><div class="v">${commits.length}</div><div class="k">納品したコミット<br>（client/ と server/）</div></div>
+    <div class="stat s"><div class="v">${t.passed != null ? `${esc(t.passed)} <small>/ ${esc(t.passed + (t.failed || 0))}</small>` : "—"}</div><div class="k">バックエンドのテスト（成功 / 全体）<br>${t.failed ? `失敗 ${esc(t.failed)} 件（元から ${esc(t.baselineFailed)} 件）` : ""}</div></div>
+    <div class="stat d"><div class="v">${activeMin} <small>分</small></div><div class="k">ステップにかけた時間<br>予算 ${budget} 分</div></div>`;
+        s.appendChild(stats);
+        if (S.takeaway) {
+          const b = $("div", "box c");
+          b.innerHTML = `<div class="h">一言でまとめると</div><p>${esc(S.takeaway)}</p>`;
+          s.appendChild(b);
+        }
+      });
+
+      // 02 timeline
+      section("タイムライン — 予定と実績", (s) => {
+        const max = Math.max(
+          1,
+          ...tl.map((r) =>
+            Math.max(r.plannedMinutes || 0, r.actualMinutes || 0),
+          ),
+        );
+        const box = $("div", "tl");
+        let part = null;
+        const partOf = (id) => (steps.find((x) => x.id === id) || {}).part;
+        const partTitle = (p) =>
+          ((D.state.parts || []).find((x) => x.id === p) || {}).title || "";
+        tl.forEach((r) => {
+          const p = partOf(r.id);
+          if (p !== part) {
+            part = p;
+            box.appendChild($("div", "phead", esc(partTitle(p))));
+          }
+          const n = steps.findIndex((x) => x.id === r.id);
+          const row = $("div", "trow");
+          row.innerHTML = `<span class="n">${String(n).padStart(2, "0")}</span><span class="t">${esc(r.title)} ${r.forced ? '<span class="chip n">時間の都合で先へ</span>' : ""}<br><small>${fmtT(r.startedAt)}</small></span>
+      <span class="bars"><i style="width:${(100 * (r.plannedMinutes || 0)) / max}%"></i><b style="width:${(100 * (r.actualMinutes || 0)) / max}%"></b></span>
+      <span class="m">${r.actualMinutes ?? "—"} / ${r.plannedMinutes} 分</span>`;
+          box.appendChild(row);
+        });
+        s.appendChild(box);
+        s.appendChild(
+          $(
+            "div",
+            "legend",
+            '<span class="a">予定の時間</span><span class="b">実際にかかった時間</span>',
+          ),
+        );
+        if (S.timelineNote) s.appendChild($("p", null, esc(S.timelineNote)));
+      });
+
+      // 03 Act 1: the proposal
+      section("第1幕 — 提案書", (s) => {
+        if (S.proposalNote) s.appendChild($("p", null, esc(S.proposalNote)));
+        const rows = [
+          ["見つけた RFP の穴", notes.gaps],
+          ["提案の方針（あなたの判断）", notes.decisions],
+          ["前提条件", notes.assumptions],
+        ].filter((r) => r[1]);
+        if (rows.length) {
+          const t = $("table");
+          t.innerHTML = `<tbody>${rows.map((r) => `<tr><th style="width:26%">${esc(r[0])}</th><td>${esc(r[1])}</td></tr>`).join("")}</tbody>`;
+          s.appendChild(t);
+        }
+        const deliv = (D.deliverables || []).filter(
+          (f) => f.name !== "progress-report.html",
+        );
+        if (deliv.length) {
+          const f = $("div", "files");
+          deliv.forEach((d) => {
+            const a = $(
+              "a",
+              "file",
+              `<div class="p">proposal/${esc(d.name)}</div><div class="d">${d.kind === "md" ? "Markdown（整形して表示）" : "HTML"}</div>`,
+            );
+            a.href = d.url;
+            a.target = "_blank";
+            f.appendChild(a);
+          });
+          s.appendChild(f);
+        }
+      });
+
+      // 04 Act 2: what was delivered
+      section("第2幕 — 納品したもの", (s) => {
+        const changes =
+          S.changes && S.changes.length
+            ? S.changes
+            : ((D.git && D.git.commits) || []).map((c) => ({
+                title: c.subject,
+                commit: c.hash,
+              }));
+        if (notes.reports_issue) {
+          const b = $("div", "box s");
+          b.innerHTML = `<div class="h">アプリを起動して、あなたが気づいたこと</div><p>${esc(notes.reports_issue)}</p>`;
+          s.appendChild(b);
+        }
+        const cards = $("div", "cards");
+        changes.forEach((c) => {
+          const card = $("div", "card");
+          card.innerHTML = `<div class="meta">${c.area ? `<span class="chip c">${esc(c.area)}</span>` : ""}${c.commit ? `<span class="chip k">${esc(String(c.commit).slice(0, 7))}</span>` : ""}</div><h3>${esc(c.title || "")}</h3>${c.what ? `<p>${esc(c.what)}</p>` : ""}${c.check ? `<div class="check"><span class="chip m">確認</span>${esc(c.check)}</div>` : ""}`;
+          cards.appendChild(card);
+        });
+        s.appendChild(cards);
+        if ((D.git || {}).stat)
+          s.appendChild($("p", null, `合計: <code>${esc(D.git.stat)}</code>`));
+      });
+
+      // 05 code review: every finding, why it mattered, what the learner chose, and what the fix changed.
+      // Detailed form: review.findings [{ severity, title, where, problem, decision, reason, fix }];
+      // older story files with review.fixed / review.deferred (plain lists) still render.
+      section("コードレビュー", (s) => {
+        const r = S.review || {};
+        if (r.note) s.appendChild($("p", null, esc(r.note)));
+        const f = r.findings || [];
+        if (f.length) {
+          const is = (x, re) => re.test(x.decision || "");
+          const fixed = f.filter((x) => is(x, /修正|fix/i)), later = f.filter((x) => is(x, /次|later|defer/i)), skip = f.filter((x) => !is(x, /修正|fix/i) && !is(x, /次|later|defer/i));
+          const stats = $("div", "stats");
+          stats.innerHTML = `<div class="stat d"><div class="v">${f.length}</div><div class="k">見つかった指摘</div></div><div class="stat m"><div class="v">${fixed.length}</div><div class="k">修正した${r.fixCommit ? `<br><span class="chip k">${esc(String(r.fixCommit).slice(0, 7))}</span>` : ""}</div></div><div class="stat s"><div class="v">${later.length}</div><div class="k">次フェーズに回した</div></div><div class="stat"><div class="v">${skip.length}</div><div class="k">見送った</div></div>`;
+          s.appendChild(stats);
+          const dc = (x) => (is(x, /修正|fix/i) ? "m" : is(x, /次|later|defer/i) ? "s" : "n");
+          const t = $("table");
+          t.innerHTML = `<thead><tr><th style="width:6%">重要度</th><th style="width:30%">指摘と場所</th><th>何が問題か</th><th style="width:28%">判断と対応</th></tr></thead><tbody>${f
+            .map((x) => `<tr><td style="font-size:18px">${esc(x.severity || "")}</td><td><b>${esc(x.title)}</b>${x.where ? `<br><code>${esc(x.where)}</code>` : ""}</td><td>${esc(x.problem || "")}</td><td><span class="chip ${dc(x)}">${esc(x.decision || "—")}</span>${x.reason ? ` ${esc(x.reason)}` : ""}${x.fix ? `<br><small>修正: ${esc(x.fix)}</small>` : ""}</td></tr>`)
+            .join("")}</tbody>`;
+          s.appendChild(t);
+        } else if ((r.fixed || []).length || (r.deferred || []).length) {
+          const g = $("div", "pairs");
+          const b1 = $("div", "box m"); b1.innerHTML = `<div class="h">直した指摘</div>${(r.fixed || []).length ? list(r.fixed) : "<p>なし</p>"}`;
+          const b2 = $("div", "box"); b2.innerHTML = `<div class="h">次フェーズに回した指摘</div>${(r.deferred || []).length ? list(r.deferred) : "<p>なし</p>"}`;
+          g.appendChild(b1); g.appendChild(b2); s.appendChild(g);
+        } else if (notes.review) { const b = $("div", "box m"); b.innerHTML = `<div class="h">レビューの記録</div><p>${esc(notes.review)}</p>`; s.appendChild(b); }
+      });
+
+      // 06 decisions and corrections
+      section("あなたが決めたことと、Claude を軌道修正した場面", (s) => {
+        const group = (title, items, cls) => {
+          s.appendChild($("h3", "sub", esc(title)));
+          if (!items.length) {
+            s.appendChild($("p", null, "記録はありません。"));
+            return;
+          }
+          const g = $("div", "pairs");
+          items.forEach((d) => {
+            const b = $("div", `box ${cls}`);
+            b.innerHTML = `<div class="h">${esc(d.title)}</div><p>${esc(d.detail)}</p>`;
+            g.appendChild(b);
+          });
+          s.appendChild(g);
+        };
+        group("あなたが決めたこと", S.decisions || [], "c");
+        group("Claude を軌道修正した場面", S.corrections || [], "");
+      });
+
+      // 07 next phase (the handover to the client)
+      // 07 next phase: the detailed handover of everything Part 2 did not cover, grouped by requirement.
+      // Each item: { req, title, status, evidence, action, priority (高/中/低), estimate, question? }.
+      // Older story files with only { title, detail } still render (detail goes into the status column).
+      section("次フェーズへの引き継ぎ", (s) => {
+        const np = S.nextPhase || [];
+        const h = S.handover || {};
+        if (h.note) s.appendChild($("p", null, esc(h.note)));
+        if (!np.length) { s.appendChild($("p", null, "記録はありません。")); return; }
+        const pr = (p) => (/高|high/i.test(p || "") ? "c" : /中|mid|medium/i.test(p || "") ? "s" : "n");
+        const count = (re) => np.filter((x) => re.test(x.priority || "")).length;
+        s.appendChild($("p", "muted", `未対応の課題 ${np.length} 件（優先度 高 ${count(/高|high/i)} · 中 ${count(/中|mid|medium/i)} · 低 ${count(/低|low/i)}）`));
+        const groups = [];
+        np.forEach((x) => { const g = x.req || "その他"; let e = groups.find((y) => y.g === g); if (!e) groups.push((e = { g, items: [] })); e.items.push(x); });
+        groups.forEach(({ g, items }) => {
+          s.appendChild($("h3", "sub", esc(g)));
+          const t = $("table");
+          t.innerHTML = `<thead><tr><th style="width:18%">課題</th><th>現状（確認した根拠）</th><th>推奨対応</th><th style="width:12%">優先度 · 目安</th></tr></thead><tbody>${items
+            .map((x) => `<tr><td><b>${esc(x.title)}</b></td><td>${esc(x.status || x.detail || "")}${x.evidence ? `<br><code>${esc(x.evidence)}</code>` : ""}</td><td>${esc(x.action || "")}${x.question ? `<br><span class="chip s">要確認</span> ${esc(x.question)}` : ""}</td><td>${x.priority ? `<span class="chip ${pr(x.priority)}">${esc(x.priority)}</span>` : ""}${x.estimate ? `<br><small>${esc(x.estimate)}</small>` : ""}</td></tr>`)
+            .join("")}</tbody>`;
+          s.appendChild(t);
+        });
+        if (h.schedule) { const b = $("div", "box s"); b.innerHTML = `<div class="h">提案書のスケジュールとの対応</div><p>${esc(h.schedule)}</p>`; s.appendChild(b); }
+        if ((h.questions || []).length) { const b = $("div", "box c"); b.innerHTML = `<div class="h">クライアントに確認したいこと</div>${list(h.questions)}`; s.appendChild(b); }
+      });
+
+      // 08 features
+      if ((S.features || []).length)
+        section("使った機能と、それを操作したのは誰か", (s) => {
+          const t = $("table");
+          t.innerHTML = `<thead><tr><th>機能</th><th>操作したのは</th><th>今日、何の役に立ったか</th></tr></thead><tbody>${S.features.map((f) => `<tr><td><code>${esc(f.name)}</code></td><td><span class="chip ${/you|あなた/i.test(f.who) ? "c" : "m"}">${esc(f.who)}</span></td><td>${esc(f.note)}</td></tr>`).join("")}</tbody>`;
+          s.appendChild(t);
+        });
+
+      // 09 not covered
+      section("今日は扱わなかったもの", (s) => {
+        const nc =
+          S.notCovered && S.notCovered.length
+            ? S.notCovered
+            : [
+                "MCP（Playwright による E2E テスト）",
+                "hooks",
+                "worktree",
+                "GitHub への push と PR",
+                "R3 発注推奨ビュー",
+              ];
+        s.appendChild($("p", null, nc.map(esc).join(" · ")));
+      });
+      document.getElementById("foot").textContent =
+        `${new Date(D.generatedAt || Date.now()).toLocaleString("ja-JP")} に、あなた自身の実行記録（チューターのログ、git の履歴、テストの結果、あなたのメモ）から生成しました。ここにある情報は、あなたのマシンの外には出ていません。`;
+    </script>
+  </body>
+</html>
